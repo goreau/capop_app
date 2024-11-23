@@ -68,24 +68,3 @@ class LstMaster {
     );
   }
 }
-
-class LstDetail {
-  int id;
-  String codend;
-  String metodo;
-  String ambiente;
-  String amostra;
-
-  LstDetail(this.id, this.codend, this.metodo, this.ambiente, this.amostra);
-
-  factory LstDetail.fromJson(dynamic json) {
-    //var prop = jsonDecode(json['dados_proposta']);
-    return LstDetail(
-        int.parse(json['id_captura_det'].toString()),
-        json['codend'].toString(),
-        json['metodo'].toString(),
-        json['ambiente'].toString(),
-        json['amostra'].toString()
-    );
-  }
-}

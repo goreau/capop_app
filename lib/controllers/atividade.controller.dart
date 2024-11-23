@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:capop_new/util/auxiliar.dart';
@@ -51,7 +50,7 @@ class AtividadeController extends GetxController {
 
   initMaster(int id) async {
     editId = id;
-
+    lstMunTipo = 0;
     final db = DbHelper.instance;
 
     var json = await db.queryMaster(id);
@@ -63,48 +62,15 @@ class AtividadeController extends GetxController {
     updatePrograma(json['id_programa'].toString());
     updatePerda(json['id_perda'].toString());
 
-    var dt = json['dt_cadastro'];//.split('-');
+    var dt = json['dt_cadastro'];
 
-   // var formattedDate = dt[2] + '-' + dt[1].padLeft(2, '0') + '-' + dt[0].padLeft(2, '0');
+
     getCurrentDate(dt);
    // dtCadastro.value = formattedDate;
   //  dateController.value.text =  dtCadastro.value;//json['dt_captura'];
     valorController.text = json['valor'].toString();
     prodController.text = json['producao'].toString();
   }
-
- /* initDetail(int id) async {
-    editIdDet = id;
-
-    loadArea();
-    loadAuxiliares();
-
-    final db = DbHelper.instance;
-    var json = await db.queryDetail(id);
-
-    updateArea(json['area'].toString());
-    updateQuart(json['quadra'].toString());
-    updateMet(json['metodo'].toString());
-    updateAmb(json['ambiente'].toString());
-    updateCap(json['local_captura'].toString());
-
-    masterId = int.parse(json['id_captura'].toString());
-    codendController.text = json['codend'].toString();
-    ailController.text = json['num_arm'].toString();
-    alturaController.text = json['altura'].toString();
-    amostraController.text = json['amostra'].toString();
-    tubosController.text = json['quant_potes'].toString();
-    tempIniController.text = json['temp_inicio'].toString();
-    tempFimController.text = json['temp_final'].toString();
-    horaIni.value = json['hora_inicio'].toString();
-    horaIniController.text = horaIni.value;
-    horaFim.value = json['hora_final'].toString();
-    horaFimController.text = horaFim.value;
-    umidIniController.text = json['umidade_inicio'].toString();
-    umidFimController.text = json['umidade_final'].toString();
-    latController.text = json['latitude'].toString();
-    lngController.text = json['longitude'].toString();
-  }*/
 
   void setPagamento(int value) {
     idPagamento.value = value;
@@ -146,7 +112,8 @@ class AtividadeController extends GetxController {
     row['status'] = 0;
 
     if (editId == 0) {
-      var xx = await dbHelper.insert(row, 'atividade');
+      await dbHelper.insert(row, 'atividade');
+
       doClear();
       final scaffold = ScaffoldMessenger.of(context);
       scaffold.showSnackBar(
@@ -169,8 +136,6 @@ class AtividadeController extends GetxController {
 
   }
 
-
-
   doClear() {
     var dt = dateController.value.text;
     var formattedDate = dt.split('/').reversed.join('-');
@@ -190,7 +155,7 @@ class AtividadeController extends GetxController {
     var formattedDate = date.split('-').reversed.join('/');
     //var formattedDate = "${dateParse.day}-${dateParse.month}-${dateParse.year}";
     this.dateController.value.text = formattedDate;
-    this.dtCadastro.value = formattedDate.toString();
+    this.dtCadastro.value = date;
   }
 
   loadBase(){

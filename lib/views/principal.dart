@@ -2,13 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:capop_new/colors-constants.dart';
 import 'package:capop_new/util/routes.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class Principal extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Capop',style: TextStyle(fontSize: 20, fontFamily: 'RobotoCondensed', fontWeight: FontWeight.bold, color: COR_BRANCO)),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.more_vert,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              WidgetsFlutterBinding.ensureInitialized();
+              PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+               // String appName = packageInfo.appName;
+               // String packageName = packageInfo.packageName;
+             //   String version = packageInfo.version;
+             //   String buildNumber = packageInfo.buildNumber;
+                showAboutDialog(
+                  context: context,
+                  applicationVersion: packageInfo.version,
+                  applicationIcon: Image.asset('assets/images/icon.png'),
+                  applicationLegalese: 'App para registro de informações de utilização de capacidade operacional',
+                );
+              });
+
+
+            },
+          ),
+        ],
       ),
       body: new Container(      
         child: new Image.asset('assets/images/casa.png'),
@@ -25,9 +52,9 @@ class Principal extends StatelessWidget {
                   child: ListTile(
                     leading: SizedBox(child: Image.asset('assets/images/casa.png'),width: 30,height: 30,),
                     title: Text('Capop App', style: TextStyle(fontSize: 18, color: COR_BRANCO, fontWeight: FontWeight.bold),),
-                    subtitle: Text('Condição de Moradias', style: TextStyle(fontSize: 12, color: COR_BRANCO, fontWeight: FontWeight.bold),),
+                    subtitle: Text('App para informação de uso de Cap. Operacional', style: TextStyle(fontSize: 10, color: COR_BRANCO, fontWeight: FontWeight.bold),),
                   ),
-                  decoration: BoxDecoration(color: COR_AZUL_MARINHO),
+                  decoration: BoxDecoration(color: COR_AZUL),
                 ),
               ),
               Container(
@@ -61,9 +88,9 @@ class Principal extends StatelessWidget {
               Container(
                 height: 40,
                 child: ListTile(
-                  leading: Icon(Icons.bug_report_outlined),
+                  leading: Icon(Icons.manage_accounts),
                   title: Text(
-                    'Captura',
+                    'Atividade',
                     style: TextStyle(fontSize: 12),
                   ),
                   onTap: () {

@@ -11,10 +11,10 @@ class Producao extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ctrl.loadBase();
     if (id != null) {
       ctrl.initMaster(id);
     }
+    ctrl.loadBase();
 
     return Scaffold(
       appBar: AppBar(
@@ -115,8 +115,9 @@ class Producao extends StatelessWidget {
                               ctrl.updateMun(value);
                             },
                           ),),
-                          IconButton(
+                          IconButton.outlined(
                             icon: const Icon(Icons.refresh),
+                            color: Colors.green,
                             onPressed: () {
                               ctrl.refreshListMun();
                             },

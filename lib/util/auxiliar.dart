@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
 import 'db_helper.dart';
@@ -55,32 +53,24 @@ class Auxiliar {
   static Future<List<dynamic>> loadEnvio() async {
     final db = DbHelper.instance;
 
-    var ret = await db.qryEnvio();
-    var dados = [];
-    var details = [];
+    var dados = await db.qryEnvio();
+  // var dados = [];
 
 
-    for (var row in ret){
+
+   /* for (var row in ret){
       var map = {};
       row.forEach((key, value) {
-        if (key == 'id_captura'){
+        if (key == 'id_atividade'){
           key = 'id_master';
         }
         map[key] = value;
       });
-      details = await db.qryEnvioDet(row['id_captura']);
-      map['detail'] = details;
-      map['quadrante'] = map['quadrante'] == '' ? 0 : map['quadrante'];
+
       dados.add(map);
-    }
-    /*Future.forEach(ret, (row) async {
-      var map = {};
-      row.forEach((key, value) => map[key] = value);
-      details = await db.qryEnvioDet(row['id_captura']);
-      map['detail'] = details;
-      dados.add(map);
-    });*/
-    var send = jsonEncode(dados);
+    }*/
+
+   // var send = jsonEncode(dados);
 
     return dados;
   }

@@ -67,11 +67,12 @@ class ListaVisitas extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-
-        child: ListView.builder(
-          itemCount: lista.length,
-          itemBuilder: (ctx, i) => ConsultaMaster(lista[i]),
-        ),
+        child: lista.length > 0
+            ? ListView.builder(
+                itemCount: lista.length,
+                itemBuilder: (ctx, i) => ConsultaMaster(lista[i]),
+              )
+            : Text('Nada a exibir aqui')
       ),
     );
   }

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:capop_new/models/atividade.dart';
@@ -257,24 +256,18 @@ class DbHelper {
   Future<List<Map>> qryEnvio() async {
     Database? db = await instance.database;
     var resultSet =
-        await db!.query('captura', where: 'status=?', whereArgs: [0]);
+        await db!.query('atividade', where: 'status=?', whereArgs: [0]);
 
     return resultSet;
   }
 
-  Future<List<Map>> qryEnvioDet(int master) async {
-    Database? db = await instance.database;
-    var resultSet =
-    await db!.query('captura_det', where: 'id_captura=?', whereArgs: [master]);
 
-    return resultSet;
-  }
 
   Future<int> updateStatus(linha) async {
     Database? db = await instance.database;
 
-    var result = await db!.update('captura', {'status': linha['status']},
-        where: 'id_captura = ?', whereArgs: [linha['id']]);
+    var result = await db!.update('atividade', {'status': linha['status']},
+        where: 'id_atividade = ?', whereArgs: [linha['id']]);
 
     return result;
   }
