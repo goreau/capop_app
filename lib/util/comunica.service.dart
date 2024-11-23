@@ -20,7 +20,8 @@ class ComunicaService {
     String _url = '';
 
     //print(dados);
-    _url = 'https://capop-back.saude.sp.gov.br/mobExporta'; //'''http://vigentapi.saude.sp.gov.br/mobExporta';
+  ///  _url = 'https://capop-back.saude.sp.gov.br/mobExporta';
+    _url = 'http://10.8.150.23:4005/mobExporta';
     var values = {'data': dados};
     final response = await http.post(Uri.parse(_url), body: values);
     var data = [];
@@ -39,7 +40,8 @@ class ComunicaService {
     String _url = '';
     String resumo = 'Registros recebidos:\n';
 
-    _url = 'https://capop-back.saude.sp.gov.br/mobCadastro/${gve}';
+   // _url = 'https://capop-back.saude.sp.gov.br/mobCadastro/${gve}';
+    _url = 'http://10.8.150.23:4005/mobCadastro/${gve}';
 
 
     final response = await http.get(Uri.parse(_url));

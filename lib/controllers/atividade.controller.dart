@@ -9,6 +9,8 @@ import 'package:capop_new/models/atividade.dart';
 class AtividadeController extends GetxController {
   var editId = 0;
 
+  ScrollController scrollController = ScrollController();
+
   int lstMunTipo = 1;
 
   var lstServidor = <DropdownMenuItem<String>>[].obs;
@@ -48,6 +50,11 @@ class AtividadeController extends GetxController {
 
   final dbHelper = DbHelper.instance;
 
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
+  }
+
   initMaster(int id) async {
     editId = id;
     lstMunTipo = 0;
@@ -78,24 +85,37 @@ class AtividadeController extends GetxController {
 
   loadPreferences() async {
     try {
-      int serv = await Storage.recupera('servidor');
-      this.updateServidor(serv);
+      String serv = await Storage.recupera('servidor');
+      updateServidor(serv);
 
-    } catch (e) {}
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   doRegister(BuildContext context) async {
-    this.atividade.value.valor = this.valorController.value.text;
-    this.atividade.value.producao = this.prodController.value.text;
-
+    String val = valorController.value.text;
+    val.replaceAll(',', '.');
+    this.atividade.value.valor = val == '' ? '0.0' : val;
+    this.atividade.value.producao = prodController.value.text == '' ? '0' : prodController.value.text;
 
     var dt = dateController.value.text;
+    if (dt == ''){
+      final scaffold = ScaffoldMessenger.of(context);
+      scaffold.showSnackBar(
+        SnackBar(
+          content: const Text('A data da atividade é obrigatória.'),
+          backgroundColor: Colors.red[900],
+        ),
+      );
+      return;
+    }
     var formattedDate = dt.split('/').reversed.join('-');
 
     this.atividade.value.dtCadastro = formattedDate;
 
     try {
-      Storage.insere('servidor', this.atividade.value.idServidor);
+      Storage.insere('servidor', this.atividade.value.idServidor.toString());
     } catch (ex) {}
 
     Map<String, dynamic> row = new Map();
@@ -195,7 +215,7 @@ class AtividadeController extends GetxController {
   loadPrograma() {
     this.loadingPrograma.value = true;
     Auxiliar.loadData('programa', '' ).then((value) {
-      this.lstPrograma.value = value;print(value);
+      this.lstPrograma.value = value;
       this.loadingPrograma.value = false;
     });
   }
@@ -224,8 +244,8 @@ class AtividadeController extends GetxController {
     });
   }
 
-  updatePrograma(value) {
-    if (value == 'null') return true;
+   Future<void> updatePrograma(value) async {
+    if (value == 'null') return;
 
     this.loadingAtividade.value = true;
     this.atividade.value.idPrograma = int.parse(value);
@@ -251,13 +271,27 @@ class AtividadeController extends GetxController {
     this.idModalidade.value = value;
   }
 
-  updatePerda(value) {
+  updatePerda(value) async {
     this.atividade.value.idPerda = int.parse(value);
     this.idPerda.value = value;
+    if (value != '999'){
+      updateMun('999');
+      await updatePrograma('999');
+      updateAtiv('999');
+
+      updateModalidade('999');
+      updatePagamento(0);
+      valorController.text = '0.0';
+      prodController.text = '0';
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent,
+        duration: Duration(seconds: 1),
+        curve: Curves.easeOut,
+      );
+    }
   }
 
   updateServidor(value) {
-    print(value);
     this.atividade.value.idServidor = int.parse(value);
     this.idServidor.value = value;
   }

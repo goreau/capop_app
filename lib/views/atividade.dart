@@ -13,6 +13,8 @@ class Producao extends StatelessWidget {
   Widget build(BuildContext context) {
     if (id != null) {
       ctrl.initMaster(id);
+    } else {
+      ctrl.loadPreferences();
     }
     ctrl.loadBase();
 
@@ -21,6 +23,7 @@ class Producao extends StatelessWidget {
         title: Text('ATIVIDADE'),
       ),
       body: SingleChildScrollView(
+        controller: ctrl.scrollController,
         child: Column(
           children: <Widget>[
             ListTile(

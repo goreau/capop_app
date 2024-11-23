@@ -11,13 +11,6 @@ class DbHelper {
 
   Map registros = Map<String, dynamic>();
 
-  // id_captura, dt_captura, execucao, exec_3, zona, id_municipio, cod_loc, quadrante, agravo, atividade, equipe, obs, created_at, updated_at, id_usuario, codigo
-  //
-  // id_captura_det, id_captura, area, quadra, codend, coordenadas, metodo, ambiente, local_captura, num_arm, altura, hora_inicio, hora_final, temp_inicio, temp_final, umidade_inicio, umidade_final, amostra, quant_potes, fant_area, fant_quart
-  //
-  //
-
-  //final dbHelper = DatabaseHelper.instance;
 
   static final sqlCreate = [
     "CREATE TABLE municipio(id_municipio INTEGER, nome TEXT, codigo TEXT, id_regional INTEGER, id_regiao INTEGER, principal INTEGER)",
