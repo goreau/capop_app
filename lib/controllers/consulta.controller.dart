@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:capop_new/models/atividade.dart';
 import 'package:capop_new/util/db_helper.dart';
@@ -27,9 +26,17 @@ class ConsultaController extends GetxController {
   }
 
   excluiVisita(int id, String tab) async {
+    loaded.value = false;
+
     final db = DbHelper.instance;
-    Get.back(closeOverlays: true);
     int res = await db.delete(id, tab);
-    Get.toNamed('/consulta');
+
+    if (res>0) {
+      final int idx = itens.indexWhere((row) => row.id == id);
+      itens.removeAt(idx);
+
+      loaded.value = true;
+    }
+
   }
 }

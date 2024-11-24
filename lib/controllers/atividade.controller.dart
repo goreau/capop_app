@@ -142,6 +142,11 @@ class AtividadeController extends GetxController {
           backgroundColor: Colors.green[900],
         ),
       );
+      scrollController.animateTo(
+        scrollController.position.minScrollExtent,
+        duration: Duration(seconds: 1),
+        curve: Curves.easeOut,
+      );
     } else {
       await dbHelper.update(row, 'atividade', editId);
       final scaffold = ScaffoldMessenger.of(context);
