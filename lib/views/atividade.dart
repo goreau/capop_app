@@ -215,34 +215,6 @@ class Producao extends StatelessWidget {
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.rule),
-              title: Text(
-                'Modalidade:',
-                style: new TextStyle(
-                  fontSize: 13,
-                ),
-                textAlign: TextAlign.start,
-              ),
-              subtitle: Obx(
-                    () => ((ctrl.loadingModalidade.value)
-                    ? Center(child: CircularProgressIndicator())
-                    : DropdownButtonFormField<String>(
-                  hint: Text(''),
-                  value: ctrl.idModalidade.value,
-                  icon: Icon(Icons.arrow_drop_down),
-                  iconSize: 24,
-                  isExpanded: true,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                  ),
-                  items: ctrl.lstModalidade,
-                  onChanged: (value) {
-                    ctrl.updateModalidade(value);
-                  },
-                )),
-              ),
-            ),
-            ListTile(
               leading: const Icon(Icons.holiday_village_outlined),
               title: TextFormField(
                 style: new TextStyle(

@@ -10,7 +10,6 @@ class ComunicaService {
     "municipio",
     "programa",
     "aux_atividade",
-    "modalidade",
     "perda",
     "servidor"
   ];
@@ -20,8 +19,8 @@ class ComunicaService {
     String _url = '';
 
     //print(dados);
-  ///  _url = 'https://capop-back.saude.sp.gov.br/mobExporta';
-    _url = 'http://10.8.150.23:4005/mobExporta';
+    _url = 'https://capop-back.saude.sp.gov.br/mobExporta';
+  //  _url = 'http://10.8.150.23:4005/mobExporta';
     var values = {'data': dados};
     final response = await http.post(Uri.parse(_url), body: values);
     var data = [];
@@ -40,8 +39,8 @@ class ComunicaService {
     String _url = '';
     String resumo = 'Registros recebidos:\n';
 
-   // _url = 'https://capop-back.saude.sp.gov.br/mobCadastro/${gve}';
-    _url = 'http://10.8.150.23:4005/mobCadastro/${gve}';
+    _url = 'https://capop-back.saude.sp.gov.br/mobCadastro/${gve}';
+    //_url = 'http://10.8.150.23:4005/mobCadastro/${gve}';
 
 
     final response = await http.get(Uri.parse(_url));
@@ -101,15 +100,6 @@ class ComunicaService {
             ct++;
           }
           resumo += ct > 0 ? 'Atividade: $ct registros\n' : '';
-        } else if (linha == 'modalidade') {
-          ct = 0;
-          for (var campo in obj) {
-            row['id_modalidade'] = campo['id'];
-            row['descricao'] = campo['descricao'].toString().trim();
-            await dbHelper.insert(row, linha);
-            ct++;
-          }
-          resumo += ct > 0 ? 'Modalidade: $ct registros\n' : '';
         } else if (linha == 'perda') {
           ct = 0;
           for (var campo in obj) {

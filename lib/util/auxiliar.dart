@@ -27,6 +27,14 @@ class Auxiliar {
     return list;
   }
 
+  static Future<int> getImport() async {
+    final db = DbHelper.instance;
+
+    List<Map> qt = await db.qryCombo('servidor', '');
+
+    return qt.length;
+  }
+
   static Future<int> getProp(int mun) async {
     final db = DbHelper.instance;
 

@@ -7,7 +7,7 @@ import 'package:sqflite/sqflite.dart';
 
 class DbHelper {
   static final _databaseName = "capop_new.db";
-  static final _databaseVersion = 2;
+  static final _databaseVersion = 3;
 
   Map registros = Map<String, dynamic>();
 
@@ -16,16 +16,14 @@ class DbHelper {
     "CREATE TABLE municipio(id_municipio INTEGER, nome TEXT, codigo TEXT, id_regional INTEGER, id_regiao INTEGER, principal INTEGER)",
     "CREATE TABLE programa(id_programa INTEGER, descricao TEXT)",
     "CREATE TABLE aux_atividade(id_aux_atividade INTEGER, id_programa INTEGER, descricao TEXT, codigo INTEGER, ordem INTEGER)",
-    "CREATE TABLE modalidade(id_modalidade INTEGER, descricao TEXT)",
     "CREATE TABLE perda(id_perda INTEGER, descricao TEXT)",
     "CREATE TABLE servidor(id_servidor INTEGER, id_base INTEGER, nome TEXT)",
-    "CREATE TABLE atividade(id_atividade INTEGER PRIMARY KEY, dt_cadastro TEXT, id_municipio INTEGER, id_servidor INTEGER, id_aux_atividade INTEGER, producao INTEGER, id_perda INTEGER, id_pagamento INTEGER, id_modalidade INTEGER, id_programa INTEGER, valor REAL, status INTEGER)",
+    "CREATE TABLE atividade(id_atividade INTEGER PRIMARY KEY, dt_cadastro TEXT, id_municipio INTEGER, id_servidor INTEGER, id_aux_atividade INTEGER, producao INTEGER, id_perda INTEGER, id_pagamento INTEGER, id_programa INTEGER, valor REAL, status INTEGER)",
   ];
   static final tabelas = {
     "municipio",
     "programa",
     "aux_atividade",
-    "modalidade",
     "perda",
     "servidor",
     "atividade",
@@ -142,7 +140,7 @@ class DbHelper {
 
   Future<void> _persiste(Database db) async {
     //fornecer valor padrão para o campo alterado
-    final persTabela = ["municipio", "programa", "aux_atividade", "modalidade", "perda", "servidor", "atividade"];
+    final persTabela = ["municipio", "programa", "aux_atividade", "perda", "servidor", "atividade"];
     try {
       for (var element in persTabela) {
         var lista = [];
@@ -180,7 +178,6 @@ class DbHelper {
       "municipio",
       "programa",
       "aux_atividade",
-      "modalidade",
       "perda",
       "servidor",
       "atividade",
@@ -215,7 +212,7 @@ class DbHelper {
     if (tabela == 'servidor') {
       sql = 'SELECT id_$tabela as id, nome FROM $tabela';
       ord = 'nome';
-    } else if (tabela == 'programa' || tabela == 'modalidade'  || tabela == 'perda') {
+    } else if (tabela == 'programa' || tabela == 'perda') {
       sql = "SELECT id_$tabela as id, (id_$tabela || '.' || descricao) as nome FROM $tabela";
       ord = 'id_$tabela';
     } else if (tabela == 'municipio') {

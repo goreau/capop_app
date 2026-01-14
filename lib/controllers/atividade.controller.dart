@@ -1,3 +1,4 @@
+import 'package:capop_new/colors-constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:capop_new/util/auxiliar.dart';
@@ -18,7 +19,6 @@ class AtividadeController extends GetxController {
   var lstPerda = <DropdownMenuItem<String>>[].obs;
   var lstPrograma = <DropdownMenuItem<String>>[].obs;
   var lstAtividade = <DropdownMenuItem<String>>[].obs;
-  var lstModalidade = <DropdownMenuItem<String>>[].obs;
   var idServidor = '0'.obs;
   var idMun = '0'.obs;
   var idPerda = '999'.obs;
@@ -31,7 +31,6 @@ class AtividadeController extends GetxController {
   var loadingPerda = false.obs;
   var loadingPrograma = false.obs;
   var loadingAtividade = false.obs;
-  var loadingModalidade = false.obs;
   var ordem = 1;
 
   var clearAll = false.obs;
@@ -50,9 +49,37 @@ class AtividadeController extends GetxController {
 
   final dbHelper = DbHelper.instance;
 
+  @override
+  void onInit() {
+    super.onInit();
+    checkImport();
+  }
+
   void onClose() {
     scrollController.dispose();
     super.onClose();
+  }
+
+  void checkImport() async {
+    int qt = await Auxiliar.getImport();
+
+    if (qt < 1) {
+      // O Get.offNamed substitui a tela atual (igual ao pushReplacement)
+      // O Get.toNamed apenas empilha a tela
+      Get.offNamed(Routes.COM_IMPORTA);
+
+
+      // Ou use um Snackbar do GetX para avisar o usuário
+      Get.snackbar(
+        "Aviso",
+        "Importação necessária antes de continuar",
+        backgroundColor: COR_LARANJA,
+        colorText: COR_AZUL_MARINHO,
+
+        icon: const Icon(Icons.add_alert),
+      );
+
+    }
   }
 
   initMaster(int id) async {
@@ -64,7 +91,6 @@ class AtividadeController extends GetxController {
 
     updateMun(json['id_municipio'].toString());
     updateServidor(json['id_servidor'].toString());
-    updateModalidade(json['id_modalidade'].toString());
     updateAtiv(json['id_aux_atividade'].toString());
     updatePrograma(json['id_programa'].toString());
     updatePerda(json['id_perda'].toString());
@@ -127,7 +153,6 @@ class AtividadeController extends GetxController {
     row['id_servidor'] = this.atividade.value.idServidor;
     row['id_programa'] = this.atividade.value.idPrograma;
     row['id_aux_atividade'] = this.atividade.value.idAtividade;
-    row['id_modalidade'] = this.atividade.value.idModalidade;
     row['id_perda'] = this.atividade.value.idPerda;
     row['status'] = 0;
 
@@ -188,7 +213,6 @@ class AtividadeController extends GetxController {
     this.loadServ();
     this.loadPrograma();
     this.loadAtividade(0);
-    this.loadModalidade();
     this.loadPerda();
 
   }
@@ -233,14 +257,6 @@ class AtividadeController extends GetxController {
     });
   }
 
-  loadModalidade() {
-    this.loadingModalidade.value = true;
-    Auxiliar.loadData('modalidade', '').then((value) {
-      this.lstModalidade.value = value;
-      this.loadingModalidade.value = false;
-    });
-  }
-
   loadPerda() {
     this.loadingPerda.value = true;
     Auxiliar.loadData('perda', '').then((value) {
@@ -271,11 +287,6 @@ class AtividadeController extends GetxController {
     this.idAtividade.value = value;
   }
 
-  updateModalidade(value) {
-    this.atividade.value.idModalidade = int.parse(value);
-    this.idModalidade.value = value;
-  }
-
   updatePerda(value) async {
     this.atividade.value.idPerda = int.parse(value);
     this.idPerda.value = value;
@@ -284,7 +295,6 @@ class AtividadeController extends GetxController {
       await updatePrograma('999');
       updateAtiv('999');
 
-      updateModalidade('999');
       updatePagamento(0);
       valorController.text = '0.0';
       prodController.text = '0';
